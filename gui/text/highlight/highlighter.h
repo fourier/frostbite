@@ -34,8 +34,6 @@ private:
     void highlightAlert(HighlightSettingsEntry);
     void highlightTimer(HighlightSettingsEntry);
 
-    static QString createCommand(const QString& text, const QString& command);
-
     Qt::CaseSensitivity matchCase(bool);
 
     QList<HighlightSettingsEntry> highlightList;

@@ -47,7 +47,12 @@ void WindowWriterThread::run() {
 }
 
 QString WindowWriterThread::process(QString text, QString win) {
-    return highlighter->highlight(alter->substitute(text, win));
+    auto substituted = alter->substitute(text, win);
+    if (substituted == text) {
+        // try command
+        substituted = alter->command(text, win);
+    }
+    return highlighter->highlight(substituted);
 }
 
 void WindowWriterThread::write(QString data) {

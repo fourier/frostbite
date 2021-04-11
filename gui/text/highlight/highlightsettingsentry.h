@@ -12,19 +12,9 @@ class HighlightSettingsEntry {
 public:
     HighlightSettingsEntry();
 
-    HighlightSettingsEntry(const int &id,
-                           const QString &value,
-                           const QString &group,
-                           const QColor &color,
-                           const QColor &bgColor,
-                           const bool &alert,
-                           const QString &alertValue,
-                           const bool &timer,
-                           const int &timerValue,
-                           const QString &timerAction,
-                           const bool command,
-                           const QString &commandValue,
-                           const QBitArray &options);
+    HighlightSettingsEntry(const int &id, const QString &value,
+        const QString &group, const QColor &color, const QColor &bgColor, const bool &alert, const QString &alertValue,
+        const bool &timer, const int &timerValue, const QString &timerAction, const QBitArray &options);
 
     int id;
     QString value;
@@ -36,8 +26,6 @@ public:
     bool timer;
     int timerValue;
     QString timerAction;
-    bool command;
-    QString commandValue;
     QBitArray options;
 
     const QString toString();

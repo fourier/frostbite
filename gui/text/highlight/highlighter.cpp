@@ -6,7 +6,7 @@
 #include "textutils.h"
 #include "audio/audioplayer.h"
 #include "timerbar.h"
-#include "globaldefines.h"
+
 #include <QSettings>
 
 
@@ -72,11 +72,6 @@ int Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int 
         startTag = "<span style=\"color:" % entry.color.name() % ";\">";
     }
     QString endTag = "</span>";
-    // handle clickable commands
-    if (entry.command && entry.commandValue.size()) {
-        startTag.append("<a href=\"" + createCommand(match, entry.commandValue) + "\">");
-        endTag.prepend("</a>");
-    }
 
     int startTagLength = startTag.length();
     int indexEnd = indexStart + startTagLength + match.length();
@@ -156,13 +151,6 @@ Qt::CaseSensitivity Highlighter::matchCase(bool value) {
         matchCase = Qt::CaseInsensitive;
     }
     return matchCase;
-}
-
-QString Highlighter::createCommand(const QString& text, const QString& command) {
-    QString cmd = command;
-    cmd.replace(QRegExp("\\$1"), text);
-    //return "frostbite://" + cmd.replace(QRegExp("\$1"), text), "", " ");
-    return FROSTBITE_SCHEMA + QString("://action/") + QUrl::toPercentEncoding(cmd, "", " "); 
 }
 
 Highlighter::~Highlighter() {
