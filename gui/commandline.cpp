@@ -277,6 +277,8 @@ bool CommandLine::filterCommand(QString text) {
             mainWindow->saveLayout();
         } else if(text.startsWith("#restoreLayout")) {
             mainWindow->restoreLayout(text.mid(14).trimmed());
+        } else if(text.startsWith("#fullscreen")) {
+            mainWindow->toggleDistractionFreeMode();
         }
         this->clear();
         return true;
