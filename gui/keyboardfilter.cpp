@@ -64,6 +64,21 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
                     break;
                 }
                 return false;
+            } else if(keyEvent->modifiers() == Qt::GroupSwitchModifier) {
+              switch (keyEvent->key()) {
+                    case Qt::Key_End:
+                    case Qt::Key_Home:
+                    case Qt::Key_PageUp:
+                    case Qt::Key_PageDown:
+                        commandLine->windowControl(keyEvent->key());
+                    break;
+                    default:
+                        QString cmd = macroSettings->getParameter("function/" +
+                            QString::number(keyEvent->modifiers() | keyEvent->key()), "").toString();
+                        return commandLine->runMacro(cmd);
+                    break;
+              }
+              return false;
             } else {
                 if(keyEvent->modifiers() == Qt::ControlModifier) {
                     QString cmd = macroSettings->getParameter("ctrl/" +
