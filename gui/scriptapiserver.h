@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QMutex>
 
 #include <QtNetwork>
 
@@ -30,6 +31,8 @@ public:
     explicit ScriptApiServer(QObject *parent = 0);
     ~ScriptApiServer();
 
+    void setScratchText(QString text);
+
     QTcpServer *tcpServer;
     QNetworkSession *networkSession;
 
@@ -52,6 +55,8 @@ private:
 
     Tray* tray;
 
+    QString scratchText;
+    QMutex mutex;
 signals:
     void track(QString);
     void clearTracked();       

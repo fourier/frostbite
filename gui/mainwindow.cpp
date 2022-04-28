@@ -251,6 +251,10 @@ ScriptStreamServer* MainWindow::getScriptStreamServer() {
     return scriptStreamServer;
 }
 
+ScriptApiServer* MainWindow::getScriptApiServer() {
+    return scriptApiServer;
+}
+
 DictionaryService* MainWindow::getDictionaryService() {
     return dictionaryService;
 }

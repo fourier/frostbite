@@ -1,9 +1,12 @@
 #include "scriptapiserver.h"
 
+#include <QMutexLocker>
+
 #include "gamedatacontainer.h"
 #include "apisettings.h"
 #include "mainwindow.h"
 #include "maps/mapdata.h"
+#include "qreadwritelock.h"
 #include "tcpclient.h"
 #include "gridwindow.h"
 #include "windowfacade.h"
@@ -153,6 +156,9 @@ void ScriptApiServer::readyRead() {
                 this->write(socket, tr("%1\\0").arg(data->getExp().keys().join("\n")));
             } else if(request.name == "ROOM_MONSTERS_BOLD") {
                 this->write(socket, tr("%1\\0").arg(data->getRoomMonstersBold().join("\n")));
+            } else if(request.name == "SCRATCH") {
+                QMutexLocker lock(&mutex);
+                this->write(socket, tr("%1\\0").arg(scratchText));
             } else {
                 this->write(socket, tr("\\0"));
             }
@@ -298,6 +304,11 @@ int ScriptApiServer::boolToInt(bool value) {
     } else {
         return 0;
     }
+}
+
+void ScriptApiServer::setScratchText(QString text) {
+    QMutexLocker lock(&mutex);
+    scratchText = text;    
 }
 
 ScriptApiServer::~ScriptApiServer() {

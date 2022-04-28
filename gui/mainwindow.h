@@ -106,6 +106,7 @@ public:
     CommandLine* getCommandLine();
     ScriptService* getScriptService();
     ScriptStreamServer* getScriptStreamServer();
+    ScriptApiServer* getScriptApiServer();
     DictionaryService* getDictionaryService();
     TimerBar* getTimerBar();
     Tray* getTray();

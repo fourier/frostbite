@@ -3,6 +3,7 @@
 #include <QDesktopServices>
 #include <QToolTip>
 
+#include "gui/gamedatacontainer.h"
 #include "mainwindow.h"
 #include "windowfacade.h"
 #include "generalsettings.h"
@@ -13,6 +14,8 @@
 #include "globaldefines.h"
 #include "snapshot.h"
 #include "custom/contextmenu.h"
+#include "scriptstreamserver.h"
+#include "scriptapiserver.h"
 
 GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;       
@@ -139,6 +142,11 @@ void GameWindow::buildContextMenu() {
     lookupWikiAct->setEnabled(false);
     connect(lookupWikiAct, SIGNAL(triggered()), this, SLOT(lookupInElanthipedia()));
 
+    translateAct = new QAction(tr("&Translate\t"), this);
+    menu->addAction(translateAct);
+    translateAct->setEnabled(false);
+    connect(translateAct, SIGNAL(triggered()), this, SLOT(translateSelection()));
+
     menu->addSeparator();
     
     copyAct = new QAction(tr("&Copy\t"), this);
@@ -230,6 +238,7 @@ void GameWindow::enableCopy(bool enabled) {
     copyAct->setEnabled(enabled);
     lookupDictAct->setEnabled(enabled);
     lookupWikiAct->setEnabled(enabled);
+    translateAct->setEnabled(enabled);
 }
 
 
@@ -251,6 +260,17 @@ void GameWindow::lookupInElanthipedia() {
             QDesktopServices::openUrl(HyperlinkUtils::createSearchElanthipediaUrl(text));
         }
     }
+}
+
+void GameWindow::translateSelection() {
+   QTextCursor textCursor = this->textCursor();
+    if (textCursor.hasSelection()) {
+        QString text = textCursor.selectedText().trimmed();
+        if (text.size()) {
+            mainWindow->getScriptApiServer()->setScratchText(text);
+            mainWindow->getScriptStreamServer()->writeData("[translate]\n");
+        }
+    }    
 }
 
 void GameWindow::copySelected() {
@@ -283,6 +303,7 @@ GameWindow::~GameWindow() {
     delete appearanceAct;
     delete lookupDictAct;
     delete lookupWikiAct;
+    delete translateAct;
     delete copyAct;
     delete selectAct;
     delete clearAct;
